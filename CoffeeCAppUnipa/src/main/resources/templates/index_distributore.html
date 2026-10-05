@@ -1,0 +1,82 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Distributore – Coffee cApp UNIPA</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" href="/css/styles.css">
+
+    <style>
+        .status-badge { padding: 5px 10px; border-radius: 4px; font-weight: bold; font-size: 0.8em; }
+        .status-idle { background: #555; color: #fff; }
+        .status-connected { background: #28a745; color: #fff; }
+        .overlay { position: relative; }
+        .overlay.disabled::after {
+            content: "IN ATTESA DI CONNESSIONE...";
+            position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.7); color: white;
+            display: flex; justify-content: center; align-items: center;
+            font-size: 1.5em; border-radius: 8px;
+            backdrop-filter: blur(2px);
+        }
+    </style>
+</head>
+<body>
+<div class="wrapper">
+    <header>
+        <div class="container">
+            <div class="brand">
+                <div class="logo"></div>
+                Schermo Distributore <span th:text="${machineName}" style="margin-left: 5px;">Nome</span>
+                <span id="machineId" th:text="${machineId}" style="display:none;"></span>
+            </div>
+        </div>
+    </header>
+    <main class="container">
+        <div class="grid cols-2">
+
+            <section class="panel">
+                <h1 id="HeaderName">In attesa...</h1>
+                <p>Stato: <span id="ConnectionStatus" class="status-badge status-idle">DISCONNESSO</span></p>
+                <p>Credito rilevato: <span id="Balance" class="badge">€ 0,00</span></p>
+            </section>
+
+            <aside class="panel overlay disabled" id="productPanel">
+                <h2>Seleziona bevanda</h2>
+                <p style="font-size: 0.9em; color: #666;">(Pannello fisico sbloccato)</p>
+                <form id="buyForm">
+                    <div class="form-row">
+                        <label class="label" for="bevanda">Bevanda</label>
+                        <select id="bevanda" name="bevanda">
+                            <option th:each="p : ${products}"
+                                    th:value="${p.name}"
+                                    th:text="${p.name} + ' (€' + ${#numbers.formatDecimal(p.price, 1, 2, 'COMMA')} + ')'">
+                                Espresso (€0,50)
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <label class="label" for="zucchero">Zucchero</label>
+                        <input class="input" type="range" id="zucchero" name="zucchero" min="0" max="5" value="2">
+                        <div class="muted">Valori: 0-5 cucchiaini</div>
+                    </div>
+                    <div class="form-row">
+                        <label class="label" for="intensita">Intensità</label>
+                        <select id="intensita" name="intensita">
+                            <option>Leggera</option>
+                            <option selected>Normale</option>
+                            <option>Forte</option>
+                        </select>
+                    </div>
+                    <div class="grid">
+                        <button class="button primary" type="submit">Eroga</button>
+                    </div>
+                </form>
+            </aside>
+
+        </div>
+    </main>
+</div>
+<script th:src="@{/js/distributore.js}"></script>
+</body>
+</html>

@@ -1,0 +1,146 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gestore – Dashboard</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+</head>
+<body>
+<div class="wrapper">
+  <header>
+    <div class="container">
+      <div class="brand"><div class="logo"></div> Gestore del sistema</div>
+      <a th:href="@{/logout}" class="logout-btn">Logout ➜</a>
+    </div>
+  </header>
+    <main class="container">
+
+        <section class="panel" style="margin-bottom: 16px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <h2 style="margin: 0;">Gestione Addetti Manutenzione</h2>
+                <a th:href="@{/dashboard/export/addetti}" class="button secondary" target="_blank">Scarica Elenco XML</a>
+            </div>
+
+            <form th:action="@{/dashboard/add-maintainer}" method="post">
+                <div class="grid cols-2">
+                    <div class="form-row">
+                        <label class="label" for="newUsername">Username</label>
+                        <input class="input" id="newUsername" name="username" placeholder="Es. mario@manutenzione.com" required>
+                    </div>
+                    <div class="form-row">
+                        <label class="label" for="newPassword">Password</label>
+                        <input type="password" class="input" id="newPassword" name="password" placeholder="Password" required>
+                    </div>
+                </div>
+                <button class="button success" type="submit">Aggiungi Addetto</button>
+            </form>
+
+            <hr>
+
+            <h3>Elenco Personale Attivo</h3>
+            <div style="overflow-x:auto;">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Username</th>
+                        <th>Credito</th>
+                        <th>Azioni</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="maintainer : ${maintainers}">
+                        <td th:text="${maintainer.id}">1</td>
+                        <td th:text="${maintainer.username}">user</td>
+                        <td th:text="${maintainer.credit}">0.0</td>
+                        <td>
+                            <form th:action="@{/dashboard/delete-maintainer}" method="post" style="display:inline;">
+                                <input type="hidden" name="id" th:value="${maintainer.id}">
+                                <button type="submit" class="button danger small">Elimina</button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="panel">
+            <h2>Gestione Parco Macchine</h2>
+
+            <form th:action="@{/dashboard/add-machine}" method="post">
+                <div class="grid cols-2">
+                    <div class="form-row">
+                        <label class="label" for="newMcName">Nome Distributore</label>
+                        <input class="input" id="newMcName" name="name" placeholder="Es. Distributore Hall" required>
+                    </div>
+                    <div class="form-row">
+                        <label class="label" for="newMcLoc">Locazione</label>
+                        <input class="input" id="newMcLoc" name="location" placeholder="Es. Edificio C - Piano Terra" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <label class="label">Posizione sulla Mappa (Clicca per selezionare)</label>
+                    <div id="map" style="height: 300px; width: 100%; border-radius: 8px; margin-bottom: 10px;"></div>
+                    <input type="hidden" id="lat" name="latitude">
+                    <input type="hidden" id="lon" name="longitude">
+                </div>
+
+                <button class="button success" type="submit">Installa Distributore</button>
+            </form>
+
+            <hr>
+
+            <h3>Elenco Distributori</h3>
+            <div style="overflow-x:auto;">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Locazione</th>
+                        <th>Coordinate</th>
+                        <th>Stato</th>
+                        <th>Incasso</th>
+                        <th>Livelli (A/C/L/Z)</th>
+                        <th>Azioni</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="machine : ${vendingMachines}">
+                        <td th:text="${machine.id}">1</td>
+                        <td th:text="${machine.name}">Nome</td>
+                        <td th:text="${machine.location}">Locazione</td>
+                        <td>
+                            <span th:if="${machine.latitude != null}" th:text="${#numbers.formatDecimal(machine.latitude, 1, 4) + ', ' + #numbers.formatDecimal(machine.longitude, 1, 4)}">-</span>
+                            <span th:if="${machine.latitude == null}">-</span>
+                        </td>
+                        <td th:text="${machine.status}">ATTIVA</td>
+                        <td th:text="${#numbers.formatDecimal(machine.cash, 1, 2) + ' €'}">0.00 €</td>
+                        <td>
+                            <span th:text="${machine.waterLevel}">100</span>/
+                            <span th:text="${machine.coffeeLevel}">100</span>/
+                            <span th:text="${machine.milkLevel}">100</span>/
+                            <span th:text="${machine.sugarLevel}">100</span>
+                        </td>
+                        <td>
+                            <form th:action="@{/dashboard/delete-machine}" method="post" style="display:inline;">
+                                <input type="hidden" name="id" th:value="${machine.id}">
+                                <button type="submit" class="button danger small">Elimina</button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+</div>
+<script th:src="@{/js/dashboard.js}"></script>
+</body>
+</html>

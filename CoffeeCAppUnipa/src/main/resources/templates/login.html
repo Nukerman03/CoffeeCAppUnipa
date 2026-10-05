@@ -1,0 +1,42 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login - CoffeeApp</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<div class="wrapper">
+    <header>
+        <div class="container">
+            <div class="brand"><div class="logo"></div>Login</div>
+        </div>
+    </header>
+    <main class="container">
+        <section class="panel" style="max-width:700px; margin:20px auto; padding: 40px;">
+            <h1>Accedi</h1>
+
+            <div th:if="${error}" style="background-color: #ef4444; color: white; padding: 10px; border-radius: 8px; margin-bottom: 15px;">
+                <b th:text="${error}">Errore generico</b>
+            </div>
+
+            <form th:action="@{/login}" method="post">
+                <div class="form-row">
+                    <label class="label" for="username">Username</label>
+                    <input class="input" type="text" id="username" name="username" required placeholder="Inserisci il tuo username">
+                </div>
+                <div class="form-row">
+                    <label class="label" for="password">Password</label>
+                    <input class="input" type="password" id="password" name="password" required placeholder="Inserisci la password">
+                </div>
+                <div class="grid">
+                    <button class="button primary" type="submit">Entra</button>
+                    <a class="button secondary" th:href="@{/register}">Registrati</a>
+                </div>
+            </form>
+        </section>
+    </main>
+</div>
+</body>
+</html>

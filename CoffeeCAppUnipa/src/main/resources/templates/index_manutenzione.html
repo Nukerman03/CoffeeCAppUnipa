@@ -1,0 +1,89 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Addetto Manutenzione – Pagina principale</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<div class="wrapper">
+  <header>
+    <div class="container">
+      <div class="brand"><div class="logo"></div> Addetto Manutenzione</div>
+      <a th:href="@{/logout}" class="logout-btn">Logout ➜</a>
+    </div>
+  </header>
+    <main class="container">
+        <section class="panel">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <h1 style="margin: 0;">Consulta stato distributore</h1>
+                <a th:href="@{/maintenance/export/xml}" class="button secondary" target="_blank">Scarica XML Completo</a>
+            </div>
+
+            <form th:action="@{/maintenance/search}" method="post">
+                <div class="form-row">
+                    <label class="label" for="inputId">ID Distributore</label>
+                    <input class="input" id="inputId" name="machineId" placeholder="Es. Nome o MC-xxx" required>
+                </div>
+                <button class="button primary" type="submit">Carica stato</button>
+            </form>
+            <div th:if="${error}" style="color: red; margin-top: 10px;">
+                <span th:text="${error}">Errore</span>
+            </div>
+        </section>
+
+        <div th:if="${machine != null}" class="grid cols-2" style="margin-top:16px;">
+            <section class="panel">
+                <h2>Livelli forniture <span class="badge" th:text="${machine.status}">ATTIVA</span></h2>
+                <p class="muted" th:text="|${machine.location} (${machine.name})|">Locazione</p>
+                <table class="table">
+                    <thead>
+                    <tr><th>Componente</th><th>Livello</th></tr>
+                    </thead>
+                    <tbody>
+                    <tr><td>Acqua</td><td th:text="${machine.waterLevel} + '%'">-</td></tr>
+                    <tr><td>Caffè</td><td th:text="${machine.coffeeLevel} + '%'">-</td></tr>
+                    <tr><td>Latte</td><td th:text="${machine.milkLevel} + '%'">-</td></tr>
+                    <tr><td>Zucchero</td><td th:text="${machine.sugarLevel} + '%'">-</td></tr>
+                    </tbody>
+                </table>
+
+                <form th:action="@{/maintenance/restock}" method="post" style="margin-top: 15px;">
+                    <input type="hidden" name="id" th:value="${machine.id}">
+                    <input type="hidden" name="machineName" th:value="${machine.name}">
+                    <button type="submit" class="button success" style="width: 100%;">Ripristina Livelli</button>
+                </form>
+            </section>
+            <section class="panel">
+                <h2>Eventuali guasti</h2>
+                <ul>
+                    <li th:if="${machine.status == 'GUASTA'}">Guasto generico segnalato</li>
+                    <li th:if="${machine.status == 'MANUTENZIONE'}">In manutenzione</li>
+                    <li th:if="${machine.status == 'ATTIVA'}">Nessun guasto rilevato</li>
+                    <li th:if="${machine.status == 'DISATTIVA'}">Macchina disattivata</li>
+                </ul>
+                <p class="muted">Ultimo aggiornamento: <span th:text="${#temporals.format(machine.lastHeartbeat, 'dd/MM/yyyy HH:mm')}">Mai</span></p>
+
+                <hr>
+                <h3>Gestione Stato</h3>
+                <form th:action="@{/maintenance/status}" method="post">
+                    <input type="hidden" name="id" th:value="${machine.id}">
+                    <input type="hidden" name="machineName" th:value="${machine.name}">
+                    <div class="form-row">
+                        <label class="label" for="statusSelect">Nuovo Stato</label>
+                        <select class="input" name="status" id="statusSelect">
+                            <option value="ATTIVA" th:selected="${machine.status == 'ATTIVA'}">ATTIVA</option>
+                            <option value="MANUTENZIONE" th:selected="${machine.status == 'MANUTENZIONE'}">MANUTENZIONE</option>
+                            <option value="GUASTA" th:selected="${machine.status == 'GUASTA'}">GUASTA</option>
+                            <option value="DISATTIVA" th:selected="${machine.status == 'DISATTIVA'}">DISATTIVA</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="button primary" style="width: 100%;">Aggiorna Stato</button>
+                </form>
+            </section>
+        </div>
+    </main>
+</div>
+</body>
+</html>

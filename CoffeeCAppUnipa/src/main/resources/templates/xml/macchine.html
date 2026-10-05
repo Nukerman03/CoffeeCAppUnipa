@@ -1,0 +1,17 @@
+<mach:parcoMacchine xmlns:mach="http://macchinetteXML" xmlns:th="http://www.thymeleaf.org">
+    <mach:macchina th:each="m : ${machines}">
+        <mach:id th:text="${m.id}">1</mach:id>
+        <mach:nome th:text="${m.name}">Nome</mach:nome>
+        <mach:locazione th:text="${m.location}">Locazione</mach:locazione>
+        <mach:latitudine th:text="${m.latitude}">0.0</mach:latitudine>
+        <mach:longitudine th:text="${m.longitude}">0.0</mach:longitudine>
+        <mach:stato th:text="${m.status}">ATTIVA</mach:stato>
+        <mach:incasso th:text="${m.cash}">0.00</mach:incasso>
+        <mach:livelli>
+            <mach:acqua th:text="${m.waterLevel}">100</mach:acqua>
+            <mach:caffe th:text="${m.coffeeLevel}">100</mach:caffe>
+            <mach:latte th:text="${m.milkLevel}">100</mach:latte>
+            <mach:zucchero th:text="${m.sugarLevel}">100</mach:zucchero>
+        </mach:livelli>
+    </mach:macchina>
+</mach:parcoMacchine>

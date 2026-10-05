@@ -1,0 +1,91 @@
+/* Stile base */
+:root{
+  --bg:#0f172a;
+  --panel:#111827;
+  --muted:#334155;
+  --text:#e5e7eb;
+  --textblack:#000000;
+  --accent:#fbbf24;
+  --accent-2:#22c55e;
+  --danger:#ef4444;
+}
+*{box-sizing:border-box}
+html,body{height:100%;}
+body{
+  margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif;
+  background:linear-gradient(180deg,#0b1223, var(--bg)); color:var(--text);
+  font-size: 18px;
+}
+.wrapper{min-height:100%; display:flex; flex-direction:column}
+header{
+  background:rgba(17,24,39,0.9); border-bottom:1px solid #1f2937; position:sticky; top:0; z-index:10;
+}
+header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.container{max-width:1200px; margin:0 auto; padding:16px}
+.brand{display:flex; align-items:center; gap:12px; font-weight:700}
+.brand .logo{width:28px; height:28px; border-radius:6px; background:radial-gradient(circle at 30% 30%, var(--accent), #a16207); box-shadow:0 0 20px rgba(251,191,36,.2)}
+nav a{color:var(--text); text-decoration:none; margin-right:16px; opacity:.9}
+nav a:hover{opacity:1; text-decoration:underline}
+main{flex:1;}
+.panel{background:rgba(17,24,39,.6); border:1px solid #243040; border-radius:12px; padding:20px; box-shadow:0 10px 30px rgba(0,0,0,.25)}
+.grid{display:grid; gap:16px}
+.grid.cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.grid.cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media (max-width:800px){.grid.cols-2,.grid.cols-3{grid-template-columns:1fr}}
+h1,h2,h3{margin:0 0 12px}
+.muted{color:#94a3b8}
+
+.button{display:inline-block; padding:12px 20px; border-radius:10px; border:1px solid #374151; background:white; color:var(--textblack); text-decoration:none; cursor:pointer; font-size: 1rem;}
+.button.primary{background:linear-gradient(180deg,#fbbf24,#f59e0b); border-color:#b45309; color:#111827; font-weight:700; text-align: center}
+.button.secondary{background:linear-gradient(180deg,#fbbf24,#f59e0b); border-color:#b45309; color:#111827; text-align: center}
+.button.success{background:linear-gradient(180deg,#22c55e,#16a34a); border-color:#065f46; color:white}
+.button.danger{background:linear-gradient(180deg,#ef4444,#b91c1c); border-color:#7f1d1d; color:white}
+
+.logout-btn, .logout-btn:visited, .logout-btn:hover, .logout-btn:active {
+    background-color: var(--danger);
+    color: white !important;
+    padding: 8px 16px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: 1px solid #b91c1c;
+    display: inline-flex;
+    align-items: center;
+}
+.logout-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+}
+
+.input, select, textarea{width:100%; padding:14px 16px; border-radius:8px; border:1px solid #334155; background:#0b1220; color:var(--text); font-size: 1rem;}
+.label{display:block; font-size:.9rem; color:#cbd5e1; margin-bottom:6px}
+.form-row{margin-bottom:14px}
+.card{background:rgba(15,23,42,.7); border:1px solid #273449; border-radius:10px; padding:16px}
+
+.kbd{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; background:#0b1220; border:1px solid #263246; border-bottom-width:3px; padding:2px 6px; border-radius:6px}
+.footer{opacity:.7; font-size:.9rem; padding:24px 0; text-align:center}
+
+.counter{display:flex; align-items:center; gap:8px}
+.counter button{width:36px; height:36px}
+
+.badge{display:inline-block; padding:2px 8px; border-radius:999px; border:1px solid #374151; font-size:.85rem}
+
+.table{width:100%; border-collapse:collapse}
+.table th,.table td{padding:10px 8px; border-bottom:1px solid #273449; text-align:left}
+hr{border:none; border-top:1px solid #273449; margin:16px 0}
+
+/* Rimuove gli spinner da Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+/* Rimuove gli spinner da Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+}

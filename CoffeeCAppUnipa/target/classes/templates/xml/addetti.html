@@ -1,0 +1,8 @@
+<ad:addetti xmlns:ad="http://addettiXML" xmlns:th="http://www.thymeleaf.org">
+    <ad:addetto th:each="user : ${maintainers}">
+        <ad:id th:text="${user.id}">1</ad:id>
+        <ad:nome th:text="${user.username}">Nome</ad:nome>
+        <ad:email th:text="${user.username} + '@manutenzione.com'">email@manutenzione.com</ad:email>
+        <ad:orario>09:00-18:00</ad:orario>
+    </ad:addetto>
+</ad:addetti>

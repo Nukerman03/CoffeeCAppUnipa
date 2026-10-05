@@ -1,0 +1,47 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Registrazione - CoffeeApp</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<div class="wrapper">
+    <header>
+        <div class="container">
+            <div class="brand"><div class="logo"></div>Registrazione</div>
+        </div>
+    </header>
+    <main class="container">
+        <section class="panel" style="max-width:700px; margin:20px auto; padding: 40px;">
+            <h1>Crea un account</h1>
+
+            <div th:if="${error}" style="background-color: #ef4444; color: white; padding: 10px; border-radius: 8px; margin-bottom: 15px;">
+                <b th:text="${error}">Errore</b>
+            </div>
+
+            <form th:action="@{/register}" method="post">
+                <div class="form-row">
+                    <label class="label" for="username">Username</label>
+                    <input class="input" type="text" id="username" name="username" required placeholder="Scegli un username">
+                </div>
+                <div class="form-row">
+                    <label class="label" for="password">Password</label>
+                    <input class="input" type="password" id="password" name="password" required placeholder="Scegli una password">
+                </div>
+                <div class="form-row">
+                    <label class="label" for="password-check">Conferma password</label>
+                    <input class="input" type="password" id="password-check" name="password-check" required placeholder="Ripeti la password">
+                </div>
+                <div class="grid">
+                    <button type="submit" class="button primary">Registrati</button>
+                    <a class="button secondary" th:href="@{/login}">Vai al Login</a>
+                </div>
+            </form>
+        </section>
+    </main>
+</div>
+<script th:src="@{/js/register.js}"></script>
+</body>
+</html>

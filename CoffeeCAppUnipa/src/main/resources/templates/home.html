@@ -1,0 +1,83 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Home Cliente - CoffeeCApp</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" href="/css/styles.css">
+</head>
+<body>
+<div class="wrapper">
+    <header>
+        <div class="container">
+            <div class="brand"><div class="logo"></div>CoffeeCApp Cliente</div>
+            <a th:href="@{/logout}" class="logout-btn">Logout ➜</a>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="panel">
+            <h1>Benvenuto, <span th:text="${username}" style="color: var(--accent);">Utente</span>!</h1>
+            <p>Credito disponibile:
+                <span id="userCredit" class="badge" th:text="${#numbers.formatDecimal(credit, 1, 2) + ' €'}"
+                      style="font-size: 1.2em; background-color: var(--accent-2); color: white;">0.00 €</span>
+            </p>
+        </section>
+
+        <div class="grid cols-2">
+            <section class="panel">
+                <h2>Connessione Distributore</h2>
+
+                <div th:if="${connectedMachineName == null}">
+                    <p class="muted">Inserisci l'ID presente sul display del distributore.</p>
+                    <form th:action="@{/connect}" method="post">
+                        <div class="form-row">
+                            <label class="label" for="machineIdInput">ID Distributore</label>
+                            <input class="input" type="text" id="machineIdInput" name="machineId" placeholder="Es. Nome o MC-xxx" required>
+                        </div>
+                        <button type="submit" class="button primary" style="width: 100%;">Connetti</button>
+                    </form>
+                </div>
+
+                <div th:if="${connectedMachineName != null}">
+                    <div style="text-align: center; margin-bottom: 15px;">
+                        <p>Sei connesso al distributore:</p>
+                        <h3 style="color: var(--accent);">
+                            <span th:text="${connectedMachineName}">Nome</span>
+                        </h3>
+                        <p class="muted" style="text-align: center; margin: 20px 0;">Usa il display del distributore per selezionare ed erogare la tua bevanda.</p>
+                    </div>
+
+                    <hr>
+                    <form th:action="@{/disconnect}" method="post" style="margin-top: 15px;">
+                        <button type="submit" class="button danger" style="width: 100%;">Scollegati</button>
+                    </form>
+                </div>
+            </section>
+
+            <section class="panel">
+                <h2>Ricarica Credito</h2>
+                <p class="muted">Aggiungi credito al tuo account.</p>
+                <form th:action="@{/recharge}" method="post">
+                    <div class="form-row">
+                        <label class="label" for="amountSelect">Importo (€)</label>
+                        <select class="input" id="amountSelect" name="amount">
+                            <option value="2.0">2,00 €</option>
+                            <option value="5.0" selected>5,00 €</option>
+                            <option value="10.0">10,00 €</option>
+                            <option value="20.0">20,00 €</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="button success" style="width: 100%;">Effettua Ricarica</button>
+                </form>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        &copy; 2025 CoffeeCApp Unipa - Web Systems Design
+    </footer>
+</div>
+<script th:src="@{/js/home.js}"></script>
+</body>
+</html>

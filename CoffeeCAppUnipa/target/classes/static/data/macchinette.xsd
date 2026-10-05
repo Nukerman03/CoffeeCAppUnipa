@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://macchinetteXML"
+           xmlns="http://macchinetteXML"
+           elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+  <xs:simpleType name="percentualeType">
+    <xs:restriction base="xs:integer">
+      <xs:minInclusive value="0"/>
+      <xs:maxInclusive value="100"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="statoMacchinaType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="attiva"/>
+      <xs:enumeration value="disattiva"/>
+      <xs:enumeration value="manutenzione"/>
+      <xs:enumeration value="guasta"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="parcoMacchine">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="macchina" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="id" type="xs:string"/>
+              <xs:element name="nome" type="xs:string"/>
+              <xs:element name="locazione" type="xs:string"/>
+              <xs:element name="latitudine" type="xs:double" minOccurs="0"/>
+              <xs:element name="longitudine" type="xs:double" minOccurs="0"/>
+              <xs:element name="stato" type="statoMacchinaType"/>
+              <xs:element name="incasso" type="xs:double"/>
+
+              <xs:element name="livelli">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="acqua" type="percentualeType"/>
+                    <xs:element name="caffe" type="percentualeType"/>
+                    <xs:element name="latte" type="percentualeType"/>
+                    <xs:element name="zucchero" type="percentualeType"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+
+              <xs:element name="guasti" minOccurs="0">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="guasto" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+
+              <xs:element name="ultimoAggiornamento" type="xs:dateTime"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
